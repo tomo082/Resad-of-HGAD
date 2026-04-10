@@ -1,9 +1,16 @@
 import torch
 
 
-def get_logp_a(C, z, logdet_J):
+def get_logp_a(C, z, logdet_J, mu=None):
     _GCONST_ = -0.9189385332046727 # ln(sqrt(2*pi))
-    logp = C * _GCONST_ - 0.5*torch.sum((z-1)**2, 1) + logdet_J
+    
+    if mu is not None:
+        # 正常中心 mu から 1 ずらした位置を異常分布の中心とする
+        diff = (z - mu) - 1
+    else:
+        diff = z - 1
+        
+    logp = C * _GCONST_ - 0.5 * torch.sum(diff**2, 1) + logdet_J
     logp = logp / C
     return logp
 
