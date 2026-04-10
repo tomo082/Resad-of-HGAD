@@ -82,7 +82,7 @@ def validate(args, encoder, vq_ops, constraintor, estimators, test_loader, ref_f
                 logps = logps / dim  
                 logps1_list[l].append(logps.reshape(bs, h, w))
                 
-                logps_a = get_logp_a(dim, z, log_jac_det)  # logps corresponding to abnormal distribution
+                logps_a = get_logp_a(dim, z, log_jac_det,mu=mu_l)  # logps corresponding to abnormal distribution
                 logits = torch.stack([logps, logps_a], dim=-1)  # (N, 2)
                 sa = torch.softmax(logits, dim=-1)[:, 1]
                 logps2_list[l].append(sa.reshape(bs, h, w))
