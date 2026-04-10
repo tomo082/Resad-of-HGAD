@@ -19,7 +19,7 @@ def validate(args, encoder, vq_ops, constraintor, estimators, test_loader, ref_f
     constraintor.eval()
     for estimator in estimators:  
         estimator.eval()
-　　dynamic_mus = []
+    dynamic_mus = []
     for l in range(args.feature_levels):
         # ref_features[l] は [N_fs * H * W, C] の形状
         # そのパッチ全体の平均 [1, C] を算出
