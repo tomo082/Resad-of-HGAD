@@ -286,19 +286,6 @@ def load_mc_reference_features(root_dir: str, class_names, device: torch.device,
     
     return refs
 
-def compute_dynamic_mu(ref_feature_pool):
-    # ref_feature_pool は各レイヤーの特徴のリスト
-    mus = []
-    for pool in ref_feature_pool:
-        # パッチ全体の平均 [1, C] を計算
-        mu = pool.mean(dim=0, keepdim=True)
-        mus.append(mu.to(device))
-    return mus
-
-# 推論ループの直前で mu を取得
-# ResAD++ の実装では classes.py で定義されたクラスごとにループします
-dynamic_mus = compute_dynamic_mu(ref_feature_pool)                    
-                    
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--setting', type=str, default="visa_to_mvtec")
