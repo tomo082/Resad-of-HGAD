@@ -19,7 +19,12 @@ def validate(args, encoder, vq_ops, constraintor, estimators, test_loader, ref_f
     constraintor.eval()
     for estimator in estimators:  
         estimator.eval()
-    
+　　dynamic_mus = []
+    for l in range(args.feature_levels):
+        # ref_features[l] は [N_fs * H * W, C] の形状
+        # そのパッチ全体の平均 [1, C] を算出
+        mu = ref_features[l].mean(dim=0, keepdim=True).to(device)
+        dynamic_mus.append(mu)    
     label_list, gt_mask_list = [], []
     logps1_list = [list() for _ in range(args.feature_levels)]
     logps2_list = [list() for _ in range(args.feature_levels)]
