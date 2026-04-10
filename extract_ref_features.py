@@ -1,3 +1,4 @@
+#ここで平均を取得しておく?
 import os
 import argparse
 import numpy as np
