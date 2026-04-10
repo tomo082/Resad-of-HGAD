@@ -70,13 +70,15 @@ def validate(args, encoder, vq_ops, constraintor, estimators, test_loader, ref_f
                 pos_embed = get_position_encoding(args.pos_embed_dim, h, w).to(args.device).unsqueeze(0).repeat(bs, 1, 1, 1)
                 pos_embed = pos_embed.permute(0, 2, 3, 1).reshape(-1, args.pos_embed_dim)
                 estimator = estimators[l]
+                mu = dynamic_mus[l] # [1, dim]
+                estimator = estimators[l]
 
                 if args.flow_arch == 'flow_model':
-                    z, log_jac_det = estimator(e)  
+                    z, log_jac_det = estimator(e,mu=mu)  
                 else:
-                    z, log_jac_det = estimator(e, [pos_embed, ])
+                    z, log_jac_det = estimator(e, [pos_embed, ],mu=mu)
 
-                logps = get_logp(dim, z, log_jac_det)  
+                logps = get_logp(dim, z, log_jac_det,mu=mu)  
                 logps = logps / dim  
                 logps1_list[l].append(logps.reshape(bs, h, w))
                 
