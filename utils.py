@@ -361,3 +361,12 @@ def load_weights_ada(adapter, filename):
     adapters = [adapters.load_state_dict(state, strict=False) for adapter, state in zip(adapters, state['adapter_state_dict'])]#modified 1/8
     print('Loading weights from {}'.format(filename))
 
+# 参照特徴プールから各レイヤーの平均を計算する関数
+def compute_dynamic_mu(ref_feature_pool):
+    # ref_feature_pool: List of tensors [N_fs * H * W, C]
+    mus = []
+    for pool in ref_feature_pool:
+        # パッチ全体の平均をとる
+        mu = pool.mean(dim=0, keepdim=True) # [1, C]
+        mus.append(mu)
+    return mus
