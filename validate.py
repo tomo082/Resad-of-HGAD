@@ -74,9 +74,9 @@ def validate(args, encoder, vq_ops, constraintor, estimators, test_loader, ref_f
                 estimator = estimators[l]
 
                 if args.flow_arch == 'flow_model':
-                    z, log_jac_det = estimator(e,mu=mu_l)  
+                    z, log_jac_det = estimator(e)  
                 else:
-                    z, log_jac_det = estimator(e, [pos_embed, ],mu=mu_l)
+                    z, log_jac_det = estimator(e, [pos_embed, ])
 
                 logps = get_logp(dim, z, log_jac_det,mu=mu_l)  
                 logps = logps / dim  
